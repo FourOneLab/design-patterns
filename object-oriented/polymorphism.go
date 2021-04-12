@@ -2,12 +2,13 @@ package object_oriented
 
 import "fmt"
 
-const DEFAULT_CAPACITY = 10
+const DefaultCapacity = 10
 
 // 多态这种机制需要编程语言提供特殊的语法机制来实现。
 // - 1、通过接口实现对不同对象的引用
 // - 2、通过组合将 DynamicArray 的属性传递给 SortedDynamicArray
 // - 3、通过覆盖在 SortedDynamicArray 中重写 DynamicArray 中的 Add 方法
+
 type Array interface {
 	Add(e int)
 	Get(i int) int
@@ -22,7 +23,7 @@ type DynamicArray struct {
 func NewDynamicArray() Array {
 	return &DynamicArray{
 		size:     0,
-		capacity: DEFAULT_CAPACITY,
+		capacity: DefaultCapacity,
 		elements: make([]int, 0),
 	}
 }
@@ -50,8 +51,8 @@ type SortedDynamicArray struct {
 func NewSortedDynamicArray() Array {
 	return &SortedDynamicArray{DynamicArray{
 		size:     0,
-		capacity: DEFAULT_CAPACITY,
-		elements: make([]int, DEFAULT_CAPACITY),
+		capacity: DefaultCapacity,
+		elements: make([]int, DefaultCapacity),
 	}}
 }
 

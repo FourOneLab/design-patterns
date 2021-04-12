@@ -17,6 +17,7 @@ import (
 // Golang 中首字母小写对属性只能在包内访问，首字母大写则包外可以直接访问。
 //
 // 封装是为了达到隐藏信息和保护数据的目的。
+
 type Wallet struct {
 	id                      uuid.UUID
 	createTime              time.Time

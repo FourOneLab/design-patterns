@@ -42,7 +42,7 @@
 
 ### 滥用getter和setter
 
-见：`bad_case.go`
+见：[`bad_case.go`](bad_case.go)
 
 ### 全局变量
 
@@ -52,7 +52,7 @@
 - 静态成员变量：归属于类上的数据，被所有的实例化对象所共享，相当于一定程度上的全局变量
 - 常量：最常见的全局变量
 
-见：`bad_global_var.go`
+见：[`bad_global_var.go`](bad_global_var.go)
 
 ### 全局方法
 
