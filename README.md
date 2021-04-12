@@ -56,7 +56,7 @@ DRY原则："Don't Repeat Yourself"。
 
 ## [面向过程](./process-oriented/README.md)
 
-## 接口和抽象类
+## [接口和抽象类](./interface-abstract/README.md)
 
 ## 设计原则
 
