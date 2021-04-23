@@ -1,4 +1,4 @@
-package demo_oop
+package demo_wallet
 
 // Controller + VO(view object)
 // 负责暴露接口，将 Service 中获取的 BO 转换为 VO 并返回给前端

@@ -1,4 +1,4 @@
-package demo_oop
+package demo_wallet
 
 import (
 	"errors"
