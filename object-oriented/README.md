@@ -92,7 +92,7 @@
 
 一些设计模式会固定使用继承或组合：
 
-- 组合关系： 
+- 组合关系：
   - 装饰者模式（decorator pattern）
   - 策略模式（strategy pattern）
   - 组合模式（composite pattern）
