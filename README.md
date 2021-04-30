@@ -27,7 +27,7 @@ KISS原则："Keep It Simple，Stupid"。
 
 > 简洁的代码：代码简单、逻辑清晰，也就意味着易读、易维护。
 
-## 可复用性
+## [可复用性](./design-principles/README.md#cr)
 
 DRY原则："Don't Repeat Yourself"。
 
