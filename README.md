@@ -70,10 +70,10 @@ DRY原则："Don't Repeat Yourself"。
 - SOLID 原则：[LSP 里式替换原则](./design-principles/README.md#lsp)
 - SOLID 原则：[ISP 接口隔离原则](./design-principles/README.md#isp)
 - SOLID 原则：[DIP 依赖倒置原则](./design-principles/README.md#dip)
-- DRY 原则
-- KISS 原则
-- YAGNI 原则
-- LOD 法则
+- [KISS 原则](./design-principles/README.md#kiss)
+- [YAGNI 原则](./design-principles/README.md#yagni)
+- [DRY 原则](./design-principles/README.md#dry)
+- [LOD 法则](./design-principles/README.md#lod)
 
 ## 设计模式
 
