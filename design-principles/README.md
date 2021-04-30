@@ -243,3 +243,74 @@ LSP原则中定义的父类和子类之间的关系，在 Golang 中就是接口
 
 - 首先，第一种设计思路更加灵活、易扩展、易复用。因为 Updater、Viewer 职责更加单一，单一就意味了通用、复用性好。
 - 其次，第二种设计思路在代码实现上做了一些无用功。因为 Config 接口中包含两类不相关的接口，一类是 update()，一类是 output() 和 outputInPlainText()。要求 RedisConfig、KafkaConfig、MySqlConfig 必须同时实现 Config 的所有接口函数（update、output、outputInPlainText）。除此之外，如果要往 Config 中继续添加一个新的接口，那所有的实现类都要改动。相反，如果接口粒度比较小，那涉及改动的类就比较少。
+
+## DIP
+
+依赖反转原则。
+
+### IOC
+
+控制反转（Inversion Of Control，IOC）。
+
+从[示例](./dip-ioc.go)的两个测试案例可以看出，测试框架提供了一个可扩展的代码骨架，用来组装对象、管理整个执行流程。开发时利用框架，只需要往预留的扩展点上，添加跟业务相关的代码，就可以利用框架来驱动整个程序流程的执行。这是一个典型的通过框架来实现“控制反转”的例子。
+
+- 控制：指的是对程序执行流程的控制
+- 反转：指的是没有使用框架前，需要自己控制整个程序的执行，使用框架后，整个程序的执行流程可以通过框架来控制。流程的控制权从程序员“反转”到了框架。
+
+> 实现控制反转的方法有很多，除了例子中类似于模板设计模式的方法之外，还有依赖注入等方法。
+
+控制反转并不是一种具体的实现技巧，而是一个比较笼统的设计思想，**一般用来指导框架层面的设计**。
+
+### DI
+
+依赖注入（Dependency Injection，DI）跟控制反转恰恰相反，它是一种具体的编码技巧。
+
+> 依赖注入，用一句话来概括就是：不通过 `new()` 的方式在类内部创建依赖类对象，而是将依赖的类对象在外部创建好之后，通过构造函数、函数参数等方式传递（或注入）给类使用。
+
+如[示例](./dip-di.go)所示，Notification 类负责消息推送，依赖 MessageSender 类实现推送商品促销、验证码等消息给用户。
+
+通过依赖注入的方式来将依赖的类对象传递进来，这样就提高了代码的**扩展性**，可以灵活地替换依赖的类，这一点在“开闭原则”中也有。
+
+示例代码还有继续优化的空间，可以把 MessageSender 定义成接口，基于接口而非实现编程。
+
+**依赖注入是编写可测试性代码最有效的手段。**
+
+### DI Framework
+
+上面的[示例测试文件](dip-di_test.go)中，采用依赖注入实现的 Notification 类中，虽然不需要用类似 hard code 的方式，在类内部通过 new 来创建 MessageSender 对象，但是，这个创建对象、组装（或注入）对象的工作仅仅是被移动到了更上层代码而已，还是需要自己来实现。
+
+在实际的软件开发中，一些项目可能会涉及几十、上百、甚至几百个类，类对象的创建和依赖注入会变得非常复杂。
+
+- 如果这部分工作都是自己写代码来完成，容易出错且开发成本也比较高。
+- 而对象创建和依赖注入的工作，本身跟具体的业务无关，完全可以抽象成框架来自动完成。
+
+这个框架就是“依赖注入框架”。只需要通过依赖注入框架提供的扩展点，简单配置一下所有需要创建的类对象、类与类之间的依赖关系，就可以实现由框架来自动创建对象、管理对象的生命周期、依赖注入等原本需要程序员来做的事情。
+
+现成的依赖注入框架有很多，比如：
+
+- Java 技术栈中：Google Guice、Java Spring、Pico Container、Butterfly Container 等，
+- Golang 技术栈中：[Facebook inject](https://github.com/facebookarchive/inject)、[Uber dig](https://github.com/uber-go/dig)、[Google wire](https://github.com/google/wire) 等。
+
+> Java Spring 框架自己声称是控制反转容器（Inversion Of Control Container）。实际上，控制反转容器这种表述是一种非常宽泛的描述，DI 依赖注入框架的表述更具体、更有针对性。实现控制反转的方式有很多，除了依赖注入，还有模板模式等，而 Spring 框架的控制反转主要是通过依赖注入来实现的。
+
+### DIP
+
+依赖反转原则（Dependency Inversion Principle，DIP），也叫依赖倒置原则。
+
+> High-level modules shouldn’t depend on low-level modules. Both modules should depend on abstractions. In addition, abstractions shouldn’t depend on details. Details depend on abstractions.
+>
+> 高层模块（high-level modules）不要依赖低层模块（low-level）。高层模块和低层模块应该通过抽象（abstractions）来互相依赖。除此之外，抽象（abstractions）不要依赖具体实现细节（details），具体实现细节（details）依赖抽象（abstractions）。
+
+高层模块和低层模块的划分：
+
+- 在调用链上，调用者属于高层，被调用者属于低层。
+- 在业务开发中，高层模块依赖底层模块是没有任何问题的。
+
+实际上，这条原则主要还是用来指导**框架层面的设计**，与控制反转类似。
+
+以 Tomcat 这个 Servlet 容器作为例子来解释一下。
+
+- Tomcat 是运行 Java Web 应用程序的容器。
+- 编写的 Web 应用程序代码只需要部署在 Tomcat 容器下，便可以被 Tomcat 容器调用执行。
+
+按照之前的划分原则，Tomcat 就是高层模块，编写的 Web 应用程序代码就是低层模块。Tomcat 和应用程序代码之间并没有直接的依赖关系，两者都依赖同一个“抽象”，也就是 Servlet 规范。Servlet 规范不依赖具体的 Tomcat 容器和应用程序的实现细节，而 Tomcat 容器和应用程序依赖 Servlet 规范。
